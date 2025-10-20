@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chúc O 20-10 💖</title>
+<title>Chúc Mẹ 20-10 💖</title>
 <style>
   html, body {
     margin: 0;
@@ -58,111 +58,135 @@
 <body>
   <canvas id="fireworks"></canvas>
 
-  <h1>💖 Chúc O 20-10 💖</h1>
+  <h1>💖 Chúc Mẹ 20-10 💖</h1>
   <h2>vui vẻ, hạnh phúc</h2>
-  <h3>và mãi xinh đẹp! 💐</h3>
-  <div class="footer">— Em thương O nhiều —</div>
+  <h3>và mãi mãi xinh đẹp! 💐</h3>
+  <div class="footer">— Con thương Mẹ nhiều —</div>
 
-  <!-- Nhạc nền -->
+  <!-- 🎵 Nhạc nền -->
   <audio id="bgm" preload="auto" loop>
     <source src="https://cdn.pixabay.com/download/audio/2023/02/28/audio_8c96b9a6c2.mp3?filename=romantic-piano-melody-140929.mp3" type="audio/mpeg">
   </audio>
 
-<script>
-// === Canvas pháo hoa trái tim ===
-const canvas = document.getElementById('fireworks');
-const ctx = canvas.getContext('2d');
-let W, H;
+  <script>
+  // ===== Hiệu ứng pháo hoa trái tim lung linh =====
+  const canvas = document.getElementById('fireworks');
+  const ctx = canvas.getContext('2d');
+  let w, h;
 
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
-
-function heartShape(t) {
-  const x = 16 * Math.pow(Math.sin(t), 3);
-  const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-  return [x, y];
-}
-
-class Particle {
-  constructor(x, y, color) {
-    this.x = x;
-    this.y = y;
-    this.vx = (Math.random() - 0.5) * 2;
-    this.vy = (Math.random() - 0.5) * 2;
-    this.alpha = 1;
-    this.size = Math.random() * 3 + 2;
-    this.color = color;
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
   }
-  draw() {
-    ctx.globalAlpha = this.alpha;
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    this.alpha -= 0.01;
-  }
-}
+  window.addEventListener('resize', resize);
+  resize();
 
-let particles = [];
-
-function createHeartFirework() {
-  const cx = Math.random() * W;
-  const cy = Math.random() * H * 0.4 + H * 0.2;
-  const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-
-  // Tạo hiệu ứng nổ trung tâm sáng mạnh
-  for (let i = 0; i < 30; i++) {
-    const angle = Math.random() * 2 * Math.PI;
-    const speed = Math.random() * 4 + 1;
-    const px = cx + Math.cos(angle) * 5;
-    const py = cy + Math.sin(angle) * 5;
-    const p = new Particle(px, py, "#fff");
-    p.vx = Math.cos(angle) * speed;
-    p.vy = Math.sin(angle) * speed;
-    particles.push(p);
+  function heartShape(t) {
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+    return [x, y];
   }
 
-  // Pháo hoa tim
-  for (let t = 0; t < Math.PI * 2; t += 0.08) {
-    const [hx, hy] = heartShape(t);
-    const scale = 25 + Math.random() * 10;
-    const px = cx + hx * scale;
-    const py = cy + hy * scale;
-    particles.push(new Particle(px, py, color));
+  class Particle {
+    constructor(x, y, color, size, glow) {
+      this.x = x; this.y = y;
+      this.vx = (Math.random() - 0.5) * 2;
+      this.vy = (Math.random() - 0.5) * 2;
+      this.alpha = 1;
+      this.size = size;
+      this.color = color;
+      this.glow = glow;
+    }
+    draw() {
+      ctx.globalCompositeOperation = 'lighter';
+      const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 4);
+      grad.addColorStop(0, this.color);
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.globalAlpha = this.alpha;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.alpha -= 0.01;
+    }
   }
-}
 
-function animate() {
-  ctx.fillStyle = 'rgba(255, 240, 245, 0.25)';
-  ctx.fillRect(0, 0, W, H);
-  particles.forEach((p, i) => {
-    p.update();
-    p.draw();
-    if (p.alpha <= 0) particles.splice(i, 1);
-  });
-  requestAnimationFrame(animate);
-}
+  let particles = [];
 
-setInterval(createHeartFirework, 1000);
-animate();
+  function createHeartFirework() {
+    const cx = Math.random() * w;
+    const cy = Math.random() * h * 0.4 + h * 0.2;
+    const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+    const core = new Particle(cx, cy, '#fff', 3, true);
+    particles.push(core);
 
-// === Nhạc nền ===
-const bgm = document.getElementById("bgm");
-(async()=>{
-  try{
-    await bgm.play();
-  }catch{
-    window.addEventListener("pointerdown",()=>bgm.play(),{once:true});
+    for (let t = 0; t < Math.PI * 2; t += 0.08) {
+      const [hx, hy] = heartShape(t);
+      const scale = 22 + Math.random() * 6;
+      const px = cx + hx * scale;
+      const py = cy + hy * scale;
+      particles.push(new Particle(px, py, color, Math.random() * 3 + 1, false));
+    }
   }
-})();
-</script>
+
+  function animate() {
+    ctx.fillStyle = 'rgba(255, 240, 245, 0.25)';
+    ctx.fillRect(0, 0, w, h);
+    particles.forEach((p, i) => {
+      p.update();
+      p.draw();
+      if (p.alpha <= 0) particles.splice(i, 1);
+    });
+    requestAnimationFrame(animate);
+  }
+
+  setInterval(createHeartFirework, 1000);
+  animate();
+
+  // ===== Nhạc fade-in / fade-out =====
+  const bgm = document.getElementById("bgm");
+  let fadeInterval;
+
+  function fadeIn(audio, duration=4000){
+    audio.volume=0;
+    const step=0.02;
+    clearInterval(fadeInterval);
+    fadeInterval=setInterval(()=>{
+      if(audio.volume<1){
+        audio.volume=Math.min(1, audio.volume+step);
+      } else clearInterval(fadeInterval);
+    }, duration*step);
+  }
+
+  function fadeOut(audio, duration=3000){
+    const step=0.02;
+    clearInterval(fadeInterval);
+    fadeInterval=setInterval(()=>{
+      if(audio.volume>0){
+        audio.volume=Math.max(0, audio.volume-step);
+      } else{
+        clearInterval(fadeInterval);
+        audio.pause();
+      }
+    }, duration*step);
+  }
+
+  (async()=>{
+    try{
+      await bgm.play();
+      fadeIn(bgm);
+    }catch{
+      window.addEventListener("pointerdown",()=>{
+        bgm.play().then(()=>fadeIn(bgm));
+      },{once:true});
+    }
+  })();
+
+  window.addEventListener("beforeunload",()=>fadeOut(bgm));
+  </script>
 </body>
 </html>
